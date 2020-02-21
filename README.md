@@ -5,7 +5,6 @@ Based on the paper "*Word and Symbol Spotting Using Spatial Organization of Loca
   
   
 ## Data structure
----
 To ensure the data can be read and parsed, ensure the top-level directory passed into the dataLoader.py is formatted in the following way:  
 ```
 .  
