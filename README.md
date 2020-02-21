@@ -5,7 +5,7 @@ Based on the paper "*Word and Symbol Spotting Using Spatial Organization of Loca
   
   
 ## Data structure
-To ensure the data can be read and parsed, ensure the top-level directory passed into the dataLoader.py is formatted in the following way:  
+To ensure the data can be read and parsed, ensure the top-level directory passed into the [dataLoader.py](./dataLoader.py) is formatted in the following way:  
 ```
 .  
 +--- queries/
@@ -32,7 +32,7 @@ To ensure the data can be read and parsed, ensure the top-level directory passed
 |         +--- data5.jpg  
           ...  
 ```  
-The csv files in the label/ directories map to the jpg files in the data/ directory for use in evaluateAlgorithm.py.  
+The csv files in the label/ directories map to the jpg files in the data/ directory for use in [evaluateAlgorithm.py](./evaluateAlgorithm.py).  
 CSV files should be in the following format:  
 ```
 query1,x1,y1,x2,y2
