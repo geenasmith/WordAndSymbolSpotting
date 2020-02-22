@@ -28,15 +28,15 @@ To ensure the data can be read and parsed, ensure the top-level directory passed
 |         +--- data5.jpg  
           ...  
 |    +--- label/  
-|         +--- data4.jpg  
-|         +--- data5.jpg  
+|         +--- data4.csv  
+|         +--- data5.csv  
           ...  
 ```  
 The csv files in the label/ directories map to the jpg files in the data/ directory for use in [evaluateAlgorithm.py](./evaluateAlgorithm.py).  
 CSV files should be in the following format:  
 ```
 query1,x1,y1,x2,y2
-query2,x1,x2
+query2,x1,y1
 etc
 ```  
 Where query1, and query2 map to the jpg images in the queries directory, and the (xi,yi) values map to the location of the query symbol within the corresponding image. For a concrete example, see [dataSet/train/label/img-03.csv](./dataSet/train/label/img-03.csv).  
