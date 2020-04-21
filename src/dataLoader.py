@@ -1,16 +1,13 @@
 """
-Description: Script that loads the query symbols, training and testing data sets, and labels. Prepared the data, calls our 
-             symbol spotting algorithm, then passes the results to the evaluate function.
-
-Usage: "python3 dataLoader.py <path/to/data> [randomize]: where <path/to/data> is the top-level directory containing the data, 
-             and [randomize] is an optional parameter which specifies that the data set should be handled in a random order.
+Description: Script that loads the query symbols, training and testing data sets, and labels. 
+Inputs:      "dataPath" which is a top level directory which contains the query, training and testing images. "Randomize" which 
+             is an optional boolean value determining if the data sets should be randomized or not. 
+Returns:     Three lists containing the query, training, and testing images respectively. Two dictionaries comtaining the 
+             formatted label information for the training and testing sets.
 """
 
-import sys, cv2, numpy, os, random, csv
-
-def print_usage():
-    print("Usage:\n\tpython3 dataLoader.py path/to/data [optional: randomize]")
-    exit(0)
+import sys, cv2, os, random, csv
+import numpy as np
 
 # Format the label information in a dictionary for easier handling by the evaluator
 def create_label_dict(file_name):
@@ -25,21 +22,12 @@ def create_label_dict(file_name):
 
     return dictionary
 
-def main(argv):
-    if len(sys.argv) < 2:
-        print_usage()
-
-    dataPath = sys.argv[1]
+def load_data(dataPath,randomize=False):
 
     if not(dataPath[-1] == '/'):
         dataPath += '/'
 
-    if len(sys.argv) > 2:
-        randomize = True
-    else:
-        randomize = False
-
-    queryImages = os.listdir(dataPath+"queries/")
+    queryFiles = os.listdir(dataPath+"queries/")
 
     trainingData = os.listdir(dataPath+"train/data/")
     trainingIndices = [x for x in range(0,len(trainingData))]
@@ -51,30 +39,31 @@ def main(argv):
         random.shuffle(trainingIndices)
         random.shuffle(testingIndices)
 
-    print("Training set:")
+    queryImages = []
+    testImages = []
+    trainImages = []
+    testDict = None
+    trainDict = None
+
+    # Load query symbols
+    for idx in queryFiles:
+        imageFileName = dataPath + "queries/" + idx
+        queryImages.append(cv2.imread(imageFileName).astype(np.float32))
+
+    # Load training images and format the labels in a dictionary
     for idx in trainingIndices:
-        imageFileName = trainingData[idx]
-        labelFileName = dataPath + "train/label/" + os.path.splitext(imageFileName)[0] + ".csv"
-        labelDict = create_label_dict(labelFileName)
+        imageFileName = dataPath + "train/data/" + trainingData[idx]
+        trainImages.append(cv2.imread(imageFileName).astype(np.float32))
 
-        print("File being processed: " + str(imageFileName))
-        print("Label: " + str(labelDict))
+        labelFileName = dataPath + "train/label/" + os.path.splitext(trainingData[idx])[0] + ".csv"
+        trainDict = create_label_dict(labelFileName)
 
-        # resultDict = awesome_alg(queryImages,imageFileName)
-        # metrics = evaluate(labelDict,resultDict)
-
-    print("\nTesting set:")
+    # Load testing images and format the labels in a dictionary
     for idx in testingIndices:
-        imageFileName = testingData[idx]
-        labelFileName = dataPath + "train/label/" + os.path.splitext(imageFileName)[0] + ".csv"
-        labelDict = create_label_dict(labelFileName)
+        imageFileName = dataPath + "test/data/" + testingData[idx]
+        testImages.append(cv2.imread(imageFileName).astype(np.float32))
 
-        print("File being processed: " + str(imageFileName))
-        print("Label: " + str(labelDict))
+        labelFileName = dataPath + "train/label/" + os.path.splitext(testingData[idx])[0] + ".csv"
+        testDict = create_label_dict(labelFileName)
 
-        # resultDict = awesome_alg(queryImages,imageFileName)
-        # metrics = evaluate(labelDict,resultDict)
-
-
-if __name__ == "__main__":
-    main(sys.argv)
+    return queryImages, testImages, trainImages, testDict, trainDict
