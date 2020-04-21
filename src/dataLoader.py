@@ -50,6 +50,7 @@ def load_data(dataPath,randomize=False):
         imageFileName = dataPath + "queries/" + idx
         queryImages.append(cv2.imread(imageFileName))
 
+
     # Load training images and format the labels in a dictionary
     for idx in trainingIndices:
         imageFileName = dataPath + "train/data/" + trainingData[idx]
