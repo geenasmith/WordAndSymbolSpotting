@@ -4,6 +4,7 @@
 import sys
 from dataLoader import load_data
 from evaluateAlgorithm import evaluate
+from extractDescriptors import extract_descriptors
 
 # check that the user has included enough arguments
 if len(sys.argv) < 2:
@@ -27,16 +28,21 @@ print("Read " + str(len(queryImages)) + " query images, " + str(len(trainImages)
 
 
 # --------------------------------------------
-# Extract Keypoints --> Geena
+# Extract Keypoints
 # - harris-laplace: https://docs.opencv.org/3.4/d4/d7d/tutorial_harris_detector.html
 # --------------------------------------------
 
+# *** Do we even need harris-laplace if we are using sift?
 
 # --------------------------------------------
-# Compute Descriptors --> Geena
+# Compute Descriptors
 # - SIFT: https://docs.opencv.org/master/da/df5/tutorial_py_sift_intro.html
 # --------------------------------------------
 
+print("Computing keypoints and descriptors...")
+queryKeypoints, queryDescriptors = extract_descriptors(queryImages)
+trainKeypoints, trainDescriptors = extract_descriptors(trainImages)
+testKeypoints, testDescriptors = extract_descriptors(testImages)
 
 # index scheme/hash table
 
