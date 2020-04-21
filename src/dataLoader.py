@@ -48,12 +48,12 @@ def load_data(dataPath,randomize=False):
     # Load query symbols
     for idx in queryFiles:
         imageFileName = dataPath + "queries/" + idx
-        queryImages.append(cv2.imread(imageFileName).astype(np.float32))
+        queryImages.append(cv2.imread(imageFileName))
 
     # Load training images and format the labels in a dictionary
     for idx in trainingIndices:
         imageFileName = dataPath + "train/data/" + trainingData[idx]
-        trainImages.append(cv2.imread(imageFileName).astype(np.float32))
+        trainImages.append(cv2.imread(imageFileName))
 
         labelFileName = dataPath + "train/label/" + os.path.splitext(trainingData[idx])[0] + ".csv"
         trainDict = create_label_dict(labelFileName)
@@ -61,7 +61,7 @@ def load_data(dataPath,randomize=False):
     # Load testing images and format the labels in a dictionary
     for idx in testingIndices:
         imageFileName = dataPath + "test/data/" + testingData[idx]
-        testImages.append(cv2.imread(imageFileName).astype(np.float32))
+        testImages.append(cv2.imread(imageFileName))
 
         labelFileName = dataPath + "train/label/" + os.path.splitext(testingData[idx])[0] + ".csv"
         testDict = create_label_dict(labelFileName)
