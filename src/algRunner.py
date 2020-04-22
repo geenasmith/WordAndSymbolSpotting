@@ -28,29 +28,46 @@ print("Read " + str(len(queryImages)) + " query images, " + str(len(trainImages)
 
 
 # --------------------------------------------
-# Extract Keypoints
-# - harris-laplace: https://docs.opencv.org/3.4/d4/d7d/tutorial_harris_detector.html
-# --------------------------------------------
-
-# *** Do we even need harris-laplace if we are using sift?
-
-# --------------------------------------------
 # Compute Descriptors
 # - SIFT: https://docs.opencv.org/master/da/df5/tutorial_py_sift_intro.html
 # --------------------------------------------
+
+# *** seemed strange to me to calculate the keypoints with harris-laplace if we are using sift. I just implemented sift for now but we can change it later if needed.
 
 print("Computing keypoints and descriptors...")
 queryKeypoints, queryDescriptors = extract_descriptors(queryImages)
 trainKeypoints, trainDescriptors = extract_descriptors(trainImages)
 testKeypoints, testDescriptors = extract_descriptors(testImages)
 
-# index scheme/hash table
 
-# retrieve descriptors
+# --------------------------------------------
+# Build Hash Table --> Geena
+# --------------------------------------------
+# - create hash table
+# - place keypoints for text/train into hash table based on descriptors
+# - place into 2 closest indices to avoid boundary effects (like paper)
 
-# spatial organization (Hough transform)
+
+# --------------------------------------------
+# Retrieve Descriptors using query descriptors
+# --------------------------------------------
+# - pull similar descriptors to the query from the hash table
+
+
+# --------------------------------------------
+# Build proximity graph and find spatial organization (Hough transform)
 # - hough: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
+# --------------------------------------------
 
-# voting mechanism
 
-# evaluation alg
+
+# --------------------------------------------
+# Voting Mechanism
+# --------------------------------------------
+
+
+
+# --------------------------------------------
+# Evaluation Algorithm
+# --------------------------------------------
+
