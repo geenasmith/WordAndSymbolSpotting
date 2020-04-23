@@ -26,12 +26,42 @@ def create_hash(hashSize,kps,descs):
 
             kp = kps[img][n]
             des = descs[img][n]
+            # print(des.shape)
             idx = img
 
             dictObj = create_obj(kp,des,idx)
 
-            hashVal = hash(des) % hashSize
+            hashVal = hash(tuple(des)) % hashSize
             hashTable[hashVal].append(dictObj)  #** only adding to a single index for now
 
 
     return hashTable
+
+
+
+import sys
+from dataLoader import load_data
+from evaluateAlgorithm import evaluate
+from extractDescriptors import extract_descriptors
+
+dataPath = "dataSet/"
+randomize = True
+
+print("Loading Images...")
+queryImages, testImages, trainImages, testDict, trainDict = load_data(dataPath,randomize)
+print("Read " + str(len(queryImages)) + " query images, " + str(len(trainImages)) + " training images, and " + str(len(testImages)) + " testing images\n")
+
+
+print("Computing keypoints and descriptors...")
+queryKeypoints, queryDescriptors = extract_descriptors(queryImages)
+trainKeypoints, trainDescriptors = extract_descriptors(trainImages)
+testKeypoints, testDescriptors = extract_descriptors(testImages)
+
+# print(len(trainKeypoints[0]))
+print(min(map(len,trainKeypoints)))
+
+hashSize = int(min(map(len,trainKeypoints)) * 0.75)
+print(hashSize)
+
+
+hashTable = create_hash(hashSize,trainKeypoints,trainDescriptors)
