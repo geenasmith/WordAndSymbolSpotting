@@ -1,9 +1,9 @@
 """
-Description: Script that loads the query symbols, training and testing data sets, and labels. 
-Inputs:      "dataPath" which is a top level directory which contains the query, training and testing images. "Randomize" which 
-             is an optional boolean value determining if the data sets should be randomized or not. 
-Returns:     Three lists containing the query, training, and testing images respectively. Two dictionaries comtaining the 
-             formatted label information for the training and testing sets.
+Description: Script that loads the query symbols, data set, and labels. 
+Inputs:      "dataPath" which is a top level directory which contains the query, data images, and labels. "Randomize" which 
+             is an optional boolean value determining if the data set should be randomized or not. 
+Returns:     Two lists containing the query, and data images respectively. One dictionary comtaining the 
+             formatted label information for the data set.
 """
 
 import sys, cv2, os, random, csv
@@ -29,21 +29,15 @@ def load_data(dataPath,randomize=False):
 
     queryFiles = os.listdir(dataPath+"queries/")
 
-    trainingData = os.listdir(dataPath+"train/data/")
-    trainingIndices = [x for x in range(0,len(trainingData))]
-
-    testingData = os.listdir(dataPath+"test/data/")
-    testingIndices = [x for x in range(0,len(testingData))]
+    data = os.listdir(dataPath+"data/")
+    dataIndices = [x for x in range(0,len(data))]
 
     if randomize:
-        random.shuffle(trainingIndices)
-        random.shuffle(testingIndices)
+        random.shuffle(dataIndices)
 
     queryImages = []
-    testImages = []
-    trainImages = []
-    testDict = None
-    trainDict = None
+    dataImages = []
+    dataDict = None
 
     # Load query symbols
     for idx in queryFiles:
@@ -51,20 +45,12 @@ def load_data(dataPath,randomize=False):
         queryImages.append(cv2.imread(imageFileName))
 
 
-    # Load training images and format the labels in a dictionary
-    for idx in trainingIndices:
-        imageFileName = dataPath + "train/data/" + trainingData[idx]
-        trainImages.append(cv2.imread(imageFileName))
+    # Load images and format the labels in a dictionary
+    for idx in dataIndices:
+        imageFileName = dataPath + "data/" + data[idx]
+        dataImages.append(cv2.imread(imageFileName))
 
-        labelFileName = dataPath + "train/label/" + os.path.splitext(trainingData[idx])[0] + ".csv"
-        trainDict = create_label_dict(labelFileName)
+        labelFileName = dataPath + "label/" + os.path.splitext(data[idx])[0] + ".csv"
+        dataDict = create_label_dict(labelFileName)
 
-    # Load testing images and format the labels in a dictionary
-    for idx in testingIndices:
-        imageFileName = dataPath + "test/data/" + testingData[idx]
-        testImages.append(cv2.imread(imageFileName))
-
-        labelFileName = dataPath + "train/label/" + os.path.splitext(testingData[idx])[0] + ".csv"
-        testDict = create_label_dict(labelFileName)
-
-    return queryImages, testImages, trainImages, testDict, trainDict
+    return queryImages, dataImages, dataDict

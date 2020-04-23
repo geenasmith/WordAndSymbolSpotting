@@ -1,10 +1,9 @@
-# * this is a single runner file. I thought it would be easier to combine our work this way.
-
 
 import sys
 from dataLoader import load_data
 from evaluateAlgorithm import evaluate
 from extractDescriptors import extract_descriptors
+from createHashTable import create_hash
 
 # check that the user has included enough arguments
 if len(sys.argv) < 2:
@@ -23,29 +22,26 @@ else:
 # Load Data
 # --------------------------------------------
 print("Loading Images...")
-queryImages, testImages, trainImages, testDict, trainDict = load_data(dataPath,randomize)
-print("Read " + str(len(queryImages)) + " query images, " + str(len(trainImages)) + " training images, and " + str(len(testImages)) + " testing images\n")
+queryImages, dataImages, dataDict = load_data(dataPath,randomize)
+print("Read " + str(len(queryImages)) + " query images, and " + str(len(dataImages)) + " data images\n")
 
 
 # --------------------------------------------
 # Compute Descriptors
 # - SIFT: https://docs.opencv.org/master/da/df5/tutorial_py_sift_intro.html
 # --------------------------------------------
-
 # *** seemed strange to me to calculate the keypoints with harris-laplace if we are using sift. I just implemented sift for now but we can change it later if needed.
-
-print("Computing keypoints and descriptors...")
+print("Computing keypoints and descriptors...\n")
 queryKeypoints, queryDescriptors = extract_descriptors(queryImages)
-trainKeypoints, trainDescriptors = extract_descriptors(trainImages)
-testKeypoints, testDescriptors = extract_descriptors(testImages)
+dataKeypoints, dataDescriptors = extract_descriptors(dataImages)
 
 
 # --------------------------------------------
-# Build Hash Table --> Geena
+# Build Hash Table
 # --------------------------------------------
-# - create hash table
-# - place keypoints for text/train into hash table based on descriptors
-# - place into 2 closest indices to avoid boundary effects (like paper)
+print("Building hash table...\n")
+hashSize = int(min(map(len,dataKeypoints)) * 0.75)  # currently 70% of the min number of descriptors. Paper used a value less than # of descriptors
+hashTable = create_hash(hashSize,dataKeypoints,dataDescriptors)
 
 
 # --------------------------------------------
