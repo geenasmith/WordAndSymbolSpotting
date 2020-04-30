@@ -14,7 +14,7 @@ git clone https://github.com/geenasmith/WordAndSymbolSpotting.git
 ```
 pip install -r requirements.txt
 ```  
-3. Run the program, including the randomize argument if the data should be randomized or not:  
+3. Run the program, including the optional randomize argument if the data should be randomized or not:  
 ```
 python3 algRunner.py src/dataSet
   
