@@ -1,3 +1,9 @@
-Back,10,15
-Bolts,174,275,589,984
-screw_flat,759,258
+Back
+Bolt,477,343,464,608,1353,356,1343,598
+flat_head,134,990
+hex_head,114,290,110,557,1013,306,1092,533
+middle_front_rail
+Rail
+screw_flat,467,292
+screw_pointed,1012,990
+Washer
