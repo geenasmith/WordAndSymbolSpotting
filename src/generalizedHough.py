@@ -1,6 +1,5 @@
 import numpy as np
 import networkx as nx
-import cv2
 from proximityGraph import create_prox_graph_from_point
 
 
@@ -47,10 +46,7 @@ def __generalized_hough__(queryGraph, dataGraphs, dataImgShapes, hashTable, hash
     """
 
     # Initialize heatmaps for each data image
-    heatmaps = []
-    for img in range(len(dataGraphs)):
-        l, w, _ = dataImgShapes[img]
-        heatmaps.append(np.zeros((l, w), dtype=np.uint8))
+    heatmaps = [{} for img in range(len(dataGraphs))]
 
     # For each kp in query
     for kp in list(queryGraph.nodes):
@@ -109,14 +105,13 @@ def __generalized_hough__(queryGraph, dataGraphs, dataImgShapes, hashTable, hash
                         hC = np.add(xi, x_ic)
 
                         # Increment point on heatmap
-                        heatmap = heatmaps[desc["idx"]]
-                        if is_in_bounds(heatmap, hC):
-                            heatmap[int(round(hC[0]))][int(round(hC[1]))] += 1
-
-    for heatmap in heatmaps:
-        pass
-        # cv2.imshow('SIFT', heatmap)
-        # cv2.waitKey()
+                        hC = (int(round(hC[0])), int(round(hC[1])))
+                        if is_in_bounds(dataImgShapes[desc["idx"]], hC):
+                            if hC in heatmaps[desc["idx"]]:
+                                heatmaps[desc["idx"]][hC] += 1
+                            else:
+                                heatmaps[desc["idx"]][hC] = 1
+    return heatmaps
 
 
 def compute_hC(queryGraphs, dataImgShapes):
@@ -179,7 +174,7 @@ def get_node_name_from_desc(desc):
     return out
 
 
-def is_in_bounds(array, point):
+def is_in_bounds(shape, point):
     x, y = int(round(point[0])), int(round(point[1]))
-    max_x, max_y = array.shape
+    max_x, max_y, _ = shape
     return 0 <= x < max_x and 0 <= y < max_y
