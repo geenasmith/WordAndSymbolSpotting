@@ -47,30 +47,11 @@ hashTable = create_hash(hashSize, dataKeypoints, dataDescriptors)
 
 
 # --------------------------------------------
-# Retrieve Descriptors using query descriptors
-# --------------------------------------------
-# - pull similar descriptors to the query from the hash table
-# print("Extracting similar descriptors...\n")
-# Moved into generalized_hough()
-# similarDescriptors = []
-
-# # For each query image and descriptor
-# for img in range(len(queryDescriptors)):
-#     similar_to_query = []
-#     for desc in range(0, len(queryDescriptors[img])):
-#         # Get all similar descriptors to this descriptor
-#         hash_value = hash(tuple(queryDescriptors[img][n])) % hashSize
-#         similar_to_query.extend(hashTable[hash_value])
-#     # Add to list for each query image
-#     similarDescriptors.append(similar_to_query)
-
-# --------------------------------------------
 # Build proximity graph and find spatial organization (Hough transform)
 # - hough: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
 # --------------------------------------------
 print("Building proximity graphs...\n")
 queryGraphs = create_prox_graphs(queryKeypoints, queryDescriptors)
-# dataGraphs = create_prox_graphs(dataKeypoints)
 
 # --------------------------------------------
 # Voting Mechanism
@@ -80,8 +61,6 @@ dataImgShapes = [img.shape for img in dataImages]
 
 print("Starting generalized Hough transform...\n")
 generalized_hough(queryGraphs, dataKeypoints, dataImgShapes, hashTable, hashSize)
-
-
 
 # --------------------------------------------
 # Evaluation Algorithm
