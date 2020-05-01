@@ -3,7 +3,7 @@ Word and symbol recognition project for ECE471 (Spring 2020).
   
 This project is based on the paper "*Word and Symbol Spotting Using Spatial Organization of Local Descriptors*" by M. Rusiñol and J. Lladós. We implemented the described process in order to facilitate querying of both words and symbols from a set of documents in an efficient way without first separating words and graphical symbols.
 
-For a detailed description of our implementation and results, please read our [final report](./documentation/final_report.pdf).
+For a detailed description of our implementation and results, please read our [final report](./documentation/FinalReport.pdf).
   
 ## Usage  
 1. Clone this repo into your development environment:  
